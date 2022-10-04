@@ -65,7 +65,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        webview!!.loadUrl("https://av2.sysapp.ae/en")
+        webview!!.loadUrl("https://av.80070.ae")
 
     }
 
@@ -86,7 +86,7 @@ class MainActivity : AppCompatActivity() {
                     // permission was granted, yay! Do the
                     // contacts-related task you need to do.
                     myRequest!!.grant(myRequest!!.resources)
-                    webview!!.loadUrl("https://av2.sysapp.ae/en")
+                    webview!!.loadUrl("https://av.80070.ae")
                 } else {
 
                     // permission denied, boo! Disable the
