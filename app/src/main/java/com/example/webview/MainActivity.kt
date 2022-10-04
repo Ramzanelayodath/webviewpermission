@@ -7,17 +7,19 @@ import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.webkit.*
+import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 
 
 class MainActivity : AppCompatActivity() {
-    private var mUploadMessage: ValueCallback<Uri> = null!!
+    lateinit var mUploadMessage: ValueCallback<Uri>
     private val FILECHOOSER_RESULTCODE = 1
     private val MY_PERMISSIONS_REQUEST_RECORD_AUDIO = 101
     private var myRequest: PermissionRequest? = null
     var webview: WebView? = null
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,6 +27,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
          webview = findViewById<WebView>(R.id.webview)
+
 
         webview!!.getSettings().setJavaScriptEnabled(true)
         webview!!.setWebViewClient(WebViewClient())
@@ -86,7 +89,7 @@ class MainActivity : AppCompatActivity() {
                     // permission was granted, yay! Do the
                     // contacts-related task you need to do.
                     myRequest!!.grant(myRequest!!.resources)
-                    webview!!.loadUrl("https://av.80070.ae")
+                  //  webview!!.loadUrl("https://av.80070.ae")
                 } else {
 
                     // permission denied, boo! Disable the
