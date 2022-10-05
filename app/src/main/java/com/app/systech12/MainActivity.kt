@@ -1,16 +1,18 @@
-package com.example.webview
+package com.app.systech12
 
 import android.Manifest
+import android.annotation.TargetApi
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.webkit.*
-import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.example.webview.R
 
 
 class MainActivity : AppCompatActivity() {
@@ -29,16 +31,16 @@ class MainActivity : AppCompatActivity() {
          webview = findViewById<WebView>(R.id.webview)
 
 
-        webview!!.getSettings().setJavaScriptEnabled(true)
-        webview!!.setWebViewClient(WebViewClient())
-        webview!!.getSettings().setJavaScriptEnabled(true)
-        webview!!.getSettings().setJavaScriptCanOpenWindowsAutomatically(true)
-        webview!!.setWebViewClient(WebViewClient())
+        webview!!.settings.javaScriptEnabled = true
+        webview!!.webViewClient = WebViewClient()
+        webview!!.settings.javaScriptEnabled = true
+        webview!!.settings.javaScriptCanOpenWindowsAutomatically = true
 
-        webview!!.getSettings().setSaveFormData(true)
-        webview!!.getSettings().setSupportZoom(false)
-        webview!!.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE)
-        webview!!.getSettings().setPluginState(WebSettings.PluginState.ON)
+
+        webview!!.settings.saveFormData = true
+        webview!!.settings.setSupportZoom(false)
+        webview!!.settings.cacheMode = WebSettings.LOAD_NO_CACHE
+        webview!!.settings.pluginState = WebSettings.PluginState.ON
 
         webview!!.webChromeClient = object :WebChromeClient(){
             override fun onPermissionRequest(request: PermissionRequest?) {
@@ -68,6 +70,22 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        var webViewClient = object  : WebViewClient() {
+            @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+            override fun shouldOverrideUrlLoading(
+                view: WebView,
+                request: WebResourceRequest
+            ): Boolean {
+                view.loadUrl(request.url.toString(), getCustomHeaders()!!)
+                return true
+            }
+
+            override fun shouldOverrideUrlLoading(view: WebView, url: String?): Boolean {
+                view.loadUrl(url!!, getCustomHeaders()!!)
+                return true
+            }
+        }
+        webview!!.webViewClient = webViewClient
         webview!!.loadUrl("https://av.80070.ae")
 
     }
@@ -109,7 +127,7 @@ class MainActivity : AppCompatActivity() {
         if (requestCode == FILECHOOSER_RESULTCODE) {
             if (null == mUploadMessage) return
             val result = if (intent == null || resultCode != RESULT_OK) null else intent.data
-            mUploadMessage!!.onReceiveValue(result)
+            mUploadMessage.onReceiveValue(result)
             mUploadMessage = null!!
         }
     }
@@ -144,5 +162,11 @@ class MainActivity : AppCompatActivity() {
         } else {
             myRequest!!.grant(myRequest!!.resources)
         }
+    }
+
+    private fun getCustomHeaders(): Map<String, String>? {
+        val headers: MutableMap<String, String> = HashMap()
+        headers["User-Agent"] =  "Mozilla/5.0 (Linux; Android 9; SM-G973F) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.101 Mobile Safari/537.36 ANDROID"
+        return headers
     }
 }
